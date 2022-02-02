@@ -5,7 +5,7 @@ import { MovieView } from '../movie-view/movie-view';
 
 export class MainView extends React.Component {
 
-    constructor(){
+    constructor() {
         super();
         this.state = {
           movies: [
@@ -68,7 +68,7 @@ export class MainView extends React.Component {
           render() {
             const { movies, selectedMovie } = this.state;
         
-        
+            
             if (movies.length === 0) return <div className="main-view">The list is empty!</div>;
         
             return (
