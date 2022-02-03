@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Foxxy097/myFlix-client#readme",
   "dependencies": {
+    "@parcel/compressor-raw": "^2.2.1",
     "axios": "^0.25.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
