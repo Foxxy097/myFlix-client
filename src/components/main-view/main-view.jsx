@@ -6,10 +6,10 @@ import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { RegistrationView } from '../registration-view/registration-view';
-import { DirectorView } from '../ProducerView/producer-view';
-import { ProfileView } from '../ProfielView/profile-view';
+import { DirectorView } from '../director-view/director-view';
+import { ProfileView } from '../profileView/profile-view';
 import {UserUpdate } from '../ProfileView/user-update';
-import { Menu } from '../navbar-view/navbar-view';
+import { Menubar } from '../navbar-view/navbar-view';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
