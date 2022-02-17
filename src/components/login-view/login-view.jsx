@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Form, Button, Container, Row, Col, Card, CardGroup } from 'react-bootstrap';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import './login-view.scss';
 
@@ -10,8 +10,8 @@ export function LoginView(props) {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
 
-  const [ usernameErr, setUsernameErr] = userState ('');
-  const [ passwordErr, setPasswordErr] = userState ('');
+  const [ usernameErr, setUsernameErr] = useState ('');
+  const [ passwordErr, setPasswordErr] = useState ('');
 
   // validation user inputs
 
@@ -40,7 +40,8 @@ export function LoginView(props) {
     const isReq = validate();
     if(isReq) {
       /* Send a request to the server for authentication */  
-    axios.post('https://myflixapp1.herokuapp.com/login',{
+    axios.post('https://myflixapp1.herokuapp.com/login',
+    {
       Username: username,
       Password: password
     })

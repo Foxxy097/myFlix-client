@@ -10,8 +10,7 @@ import { DirectorView } from '../director-view/director-view';
 import { ProfileView } from '../profile-view/profile-view';
 import { Menubar } from '../navbar-view/navbar-view';
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import './main-view.scss';
 
@@ -67,7 +66,7 @@ export class MainView extends React.Component {
 
             return (
               <Router>
-                <Menu user={user} />
+                <Menubar user={user} />
                 <Container>
                   <Row className="main-view justify-content-md-center">
                     <Route exact path="/" render={() => {

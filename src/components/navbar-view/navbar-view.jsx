@@ -22,7 +22,7 @@ export function Menubar ({user}) {
     return (
         <Navbar className="main-nav" sticky="top" bg="dark" expand="lg" variant="dark">
             <Container>
-                <Navbar.Brand classname="navbar=logo" href="/">myFlixCinema</Navbar.Brand>
+                <Navbar.Brand className="navbar=logo" href="/">myFlixCinema</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto">
