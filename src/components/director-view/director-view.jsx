@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import './director-view.scss';
+import {Container, Card, Button, Row} from 'react-bootstrap';
+
 import { Link } from 'react-router-dom';
-import {Container, Card, Button,} from 'react-bootstrap';
+
+import './director-view.scss';
 
 export class DirectorView extends React.Component {
 
@@ -32,10 +34,30 @@ export class DirectorView extends React.Component {
                             <span className="value">{director.Death}</span>
                         </Card.Text>
 
-                        <Button onClick={() => { onBackClick(); }}>Back</Button>
+                        <Button variant="outline-dark" onClick={() => { onBackClick(); }}>Back</Button>
                     </Card.Body>
                 </Card>
+                <Row>
+                    {movies.map(movie => (
+                        <Card className="favorite-movie card-content" key={movie._id} >
+                            <Card.Img
+                                className="fav-poster"
+                                variant="top"
+                                src={movie.ImagePath} />
+                            <Card.Body style={{ backgroundColor: "black" }}>
+                                <Card.Title className="movie_title">
+                                    {movie.Title}
+                                </Card.Title>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Row>
             </Container>
         );
     }
 }
+DirectorView.proptypes = {
+    Director: PropTypes.shape({
+        Name: PropTypes.string.isRequired,
+    }).isRequired,
+};

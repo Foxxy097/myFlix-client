@@ -1,17 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import './genre-view.scss';
+import {Container, Card, Button, Row } from 'react-bootstrap';
+
 import { Link } from 'react-router-dom';
-import {Container, Card, Button } from 'react-bootstrap';
+
+import './genre-view.scss';
 
 export class GenreView extends React.Component {
 
     render() {
-        const { genre, onBackClick } = this.props;
+        const { genre, onBackClick, movies } = this.props;
 
         return (
-            <Container>
+            <Container fluid>
                 <Card>
                     <Card.Body>
                         <Card.Title>Genre</Card.Title>
@@ -24,10 +26,32 @@ export class GenreView extends React.Component {
                             <span className="value">{genre.Description}</span>
                         </Card.Text>
 
-                        <Button onClick={() => { onBackClick(); }}>Back</Button>
+                        <Button variant="outline-dark" onClick={() => { onBackClick(); }}>Back</Button>
                     </Card.Body>
                 </Card>
+                <Row>
+                    {movies.map(movie => (
+                        <Card className="favorite-movie card-content" key={movie._id} >
+                            <Card.Img
+                                className="fav-poster"
+                                variant="top"
+                                src={movie.ImagePath} />
+                            <Card.Body style={{ backgroundColor: "black" }}>
+                                <Card.Title className="movie_title">
+                                    {movie.Title}
+                                </Card.Title>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Row>
             </Container>
         );
     }
 }
+
+GenreView.proptypes = {
+    genre: PropTypes.shape({
+        Name: PropTypes.string.isRequired,
+        Description: PropTypes.string,
+    }).isRequired,
+};
