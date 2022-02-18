@@ -10,7 +10,7 @@ import './director-view.scss';
 export class DirectorView extends React.Component {
 
     render() {
-        const { director, onBackClick } = this.props;
+        const { director, onBackClick, movies } = this.props;
 
         return (
             <Container fluid>

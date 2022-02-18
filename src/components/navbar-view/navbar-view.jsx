@@ -7,10 +7,11 @@ import './navbar-view.scss';
 
 export function Menubar ({user}) {
 
-    const onLoggedout = () => {
+    const onLoggedOut = () => {
         localStorage.clear();
-        window.open("/", "_self");
-    }
+        window.open('/', '_self');
+    };
+
     const isAuth = () => {
         if (typeof window == "undefined") {
             return false;
@@ -33,7 +34,8 @@ export function Menubar ({user}) {
                             <Nav.Link href={`/users/${user}`}>{user}</Nav.Link>
                         )}
                         {isAuth() && (
-                            <Button variant="link" onClick={() =>{ this.onLoggedOut() }}>Logout</Button>
+                            <Button variant="link" onClick={() =>{ onLoggedOut() 
+                            }}>Logout</Button>
                         )}
                         {!isAuth () && (
                             <Nav.Link href="/">Sign-in</Nav.Link>
