@@ -27687,7 +27687,7 @@ function LoginView(props) {
     const handleSubmit = (e)=>{
         e.preventDefault();
         const isReq = validate();
-        if (isReq) /* Send a request to the server for authentication */ _axiosDefault.default.post('https://myflixapp1.herokuapp.com/login', {
+        if (isReq) /* Send a request to the server for authentication */ _axiosDefault.default.post('https://myflixapp1.herokuapp.com/movies/login', {
             Username: username,
             Password: password
         }).then((response)=>{
