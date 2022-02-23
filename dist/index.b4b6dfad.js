@@ -27725,7 +27725,7 @@ function LoginView(props) {
         if (!password) {
             setPasswordErr('Password Required');
             isReq = false;
-        } else if (password.lenght < 6) {
+        } else if (password.lenght < 3) {
             setPasswordErr('Password must be 6 characters long');
             isReq = false;
         }
