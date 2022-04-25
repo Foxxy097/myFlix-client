@@ -1,25 +1,54 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-
+import React from "react";
+import PropTypes from "prop-types";
+import { Card, Button, Accordion } from "react-bootstrap";
+import "./movie-card.scss";
 import { Link } from "react-router-dom";
 
-import './movie-card.scss'
-
 export class MovieCard extends React.Component {
+
   render() {
     const { movie } = this.props;
 
-    return ( 
-      <Card>
-        <Card.Img variant="top" src={movie.ImagePath} />
+
+    if (!movie.Genre.Description) {
+      return (movie.Genre.Description = "");
+    }
+
+    return (
+      <Card
+      className="movie-card"
+        style={{
+          height: "500px",
+          margin: "3rem",
+          width: "250px",
+          maxWidth: "500px",
+        }}
+      >
+        <Link to={`/movies/id/${movie._id}`}>
+          <Card.Img
+            variant="top"
+            src={movie.ImageURL}
+            key={movie._id}
+            style={{ height: "300px"}}
+          />
+        </Link>
         <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
-          <Card.Text>{movie.Description}</Card.Text>
-          <Link to={`/movies/${movie._id}`}>
-            <Button variant="link">Open</Button>
-          </Link>
+          <Accordion flush>
+            <Accordion.Item eventKey={movie.Title}>
+              <Accordion.Header>{movie.Title}</Accordion.Header>
+              <Accordion.Body>
+                {movie.Description.substring(0, 60)}...
+                <Link to={`/movies/id/${movie._id}`}>
+                  <Button variant="link">show more!</Button>{" "}
+                </Link>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+          <Card.Text style={{ textAlign: "right" }}>
+            Genre: {movie.Genre.Name}
+          </Card.Text>
+
+
         </Card.Body>
       </Card>
     );
@@ -28,18 +57,12 @@ export class MovieCard extends React.Component {
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
-      Title: PropTypes.string.isRequired,
-      Description: PropTypes.string.isRequired,
-      ImagePath: PropTypes.string.isRequired,
-      Genre: PropTypes.shape({
-          Name: PropTypes.string.isRequired,
-      }).isRequired,
-      Director: PropTypes.shape({
-          Bio: PropTypes.string,
-          Birth: PropTypes.string,
-          Death: PropTypes.string,
-          Name: PropTypes.string.isRequired,
-      }).isRequired,
+    Title: PropTypes.string,
+    Description: PropTypes.string,
+    ImageURL: PropTypes.string,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string,
+    }),
   }).isRequired,
-  onMovieClick: PropTypes.func
+  onMovieClick: PropTypes.func,
 };

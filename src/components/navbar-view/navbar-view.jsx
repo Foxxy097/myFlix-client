@@ -1,12 +1,10 @@
 import React from 'react';
-import { Navbar, Container, Nav, Button, } from 'react-bootstrap';
+import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
+import './nav-bar.scss';
 
-import './navbar-view.scss';
-
-export function Menubar ({user}) {
-
+export function NavbarView({user}) {
     const onLoggedOut = () => {
         localStorage.clear();
         window.open('/', '_self');
@@ -24,24 +22,22 @@ export function Menubar ({user}) {
     };
 
     return (
-        <Navbar className="main-nav" sticky="top" bg="dark" expand="lg" variant="dark">
-            <Container>
-                <Navbar.Brand className="navbar=logo" href="/">myFlixCinema</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar className="main-nav" sticky="top" expand="lg" variant="light">
+            <Container fluid>
+                <Navbar.Brand className="navbar-logo" href="/" style={{ fontSize:"36px" }}>BETAMAX</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto">
-                        {isAuth() &&(
-                            <Nav.Link href={`/users/${user}`}>{user}</Nav.Link>
+                        {isAuth() && (
+                            <Link className='profile-name' to={`/users/${user}`}>{user}</Link>
                         )}
                         {isAuth() && (
-                            <Button variant="link" onClick={() =>{ onLoggedOut() 
-                            }}>Logout</Button>
-                        )}
-                        {!isAuth () && (
-                            <Nav.Link href="/">Sign-in</Nav.Link>
+                            <Button variant="link" label="Logout" onClick={() => {
+                                onLoggedOut() 
+                            }}>Log out</Button>
                         )}
                         {!isAuth() && (
-                            <Nav.Link href="/register">Sign-up</Nav.Link>
+                            <Nav.Link href="/register">Register</Nav.Link>
                         )}
                     </Nav>
                 </Navbar.Collapse>

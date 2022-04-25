@@ -1,22 +1,19 @@
 import React from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
-import {Container, Card, Button, Row } from 'react-bootstrap';
-
-import { Link } from 'react-router-dom';
-
 import './genre-view.scss';
+import {Container, Card, Row, Button} from 'react-bootstrap';
+
 
 export class GenreView extends React.Component {
 
     render() {
-        const { genre, onBackClick, movies } = this.props;
+        const { genre, movies } = this.props;
 
         return (
             <Container fluid>
                 <Card>
                     <Card.Body>
-                        <Card.Title>Genre</Card.Title>
+                        <Card.Title style={{ textAlign: "center", fontSize: "36px", margin:"1rem"}}>Genre</Card.Title>
                         <Card.Text>
                             <span className="label">Name: </span>
                             <span className="value">{genre.Name}</span>
@@ -26,17 +23,23 @@ export class GenreView extends React.Component {
                             <span className="value">{genre.Description}</span>
                         </Card.Text>
 
-                        <Button variant="outline-dark" onClick={() => { onBackClick(); }}>Back</Button>
+                        <Button
+                    label="Back"
+                    onClick={() => {
+                      history.back();
+                    }}
+                    style={{ textAlign: "center" }}
+                  >Back</Button>
                     </Card.Body>
                 </Card>
-                <Row>
+                <Row style={{ textAlign: "center", fontSize: "36px", margin:"2rem", display:"grid"}}>
                     {movies.map(movie => (
-                        <Card className="favorite-movie card-content" key={movie._id} >
+                        <Card className="favorite-movie card-content" key={movie._id} style={{ margin:"2rem"}}>
                             <Card.Img
                                 className="fav-poster"
                                 variant="top"
-                                src={movie.ImagePath} />
-                            <Card.Body style={{ backgroundColor: "black" }}>
+                                src={movie.ImageURL} />
+                            <Card.Body>
                                 <Card.Title className="movie_title">
                                     {movie.Title}
                                 </Card.Title>
@@ -52,6 +55,6 @@ export class GenreView extends React.Component {
 GenreView.proptypes = {
     genre: PropTypes.shape({
         Name: PropTypes.string.isRequired,
-        Description: PropTypes.string,
+        Description: PropTypes.string.isRequired,
     }).isRequired,
 };
