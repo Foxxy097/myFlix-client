@@ -24,7 +24,7 @@ export function NavbarView({user}) {
     return (
         <Navbar className="main-nav" sticky="top" expand="lg" variant="light">
             <Container fluid>
-                <Navbar.Brand className="navbar-logo" href="/" style={{ fontSize:"36px" }}>BETAMAX</Navbar.Brand>
+                <Navbar.Brand className="navbar-logo" href="/" style={{ fontSize:"36px" }}>MyFlix</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto">
