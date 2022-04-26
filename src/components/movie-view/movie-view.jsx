@@ -1,121 +1,38 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { Card, Container, Row, Col, CardGroup, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./movie-view.scss";
-import axios from "axios";
+import './movie-view.scss';
 
 export class MovieView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFavorite: false,
-      FavoriteMovies: [],
-    };
-  }
-
-  keypressCallback(event) {
-    console.log(event.key);
-  }
-
-  componentDidMount() {
-    document.addEventListener("keypress", this.keypressCallback);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("keypress", this.keypressCallback);
-  }
-
-  addFavorite(movie) {
-    let token = localStorage.getItem("token");
-    let user = localStorage.getItem("user");
-
-    let url = `https://myflixapp1.herokuapp.com/users/${user}/movies/${movie._id}`;
-
-    axios
-      .post(url, "", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        console.log(response);
-        history.back();
-        alert("Movies has been added to your favorites list!");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
 
   render() {
-    const { movie, Director } = this.props;
+    const { movie, onBackClick } = this.props;
 
     return (
-      <Container>
-        <Row>
-          <Col>
-            <CardGroup>
-              <Card style={{ border: "none" }}>
-                <Card.Body>
-                  <Card.Img
-                    className="movie-image"
-                    src={movie.ImageURL}
-                    alt={movie.Title}
-                  />
-                  <Card.Title
-                    className="movie-title"
-                    style={{
-                      fontSize: "25px",
-                      textAlign: "center",
-                      margin: "1rem",
-                    }}
-                  >
-                    {movie.Title}
-                  </Card.Title>
-                  <Card.Text
-                    className="movie-description"
-                    style={{ margin: "1rem" }}
-                  >
-                    {movie.Description}{" "}
-                  </Card.Text>
-                  <Card.Text>{movie.Bio}</Card.Text>
-                  <Card.Text className="movie-genre" style={{ margin: "1rem" }}>
-                    Director:{" "}
-                    <Link to={`/directors/${movie.Director.Name}`}>
-                      {movie.Director.Name}
-                    </Link>
-                  </Card.Text>
-
-                  <Card.Text className="movie-genre" style={{ margin: "1rem" }}>
-                    Genre:{" "}
-                    <Link to={`/genre/${movie.Genre.Name}`}>
-                      {movie.Genre.Name}
-                    </Link>
-                  </Card.Text>
-                  <Button
-                    className="favButton"
-                    label="+ Add"
-                    onClick={() => {
-                      this.addFavorite(movie);
-                    }}
-                    style={{ textAlign: "center" }}
-                  >
-                    + Add to List
-                  </Button>
-                  <Button
-                    label="Back"
-                    onClick={() => {
-                      history.back();
-                    }}
-                    style={{ textAlign: "center" }}
-                  >
-                    Back
-                  </Button>
-                </Card.Body>
-              </Card>
-            </CardGroup>
-          </Col>
-        </Row>
-      </Container>
+      <div className="movie-view">
+        <div className="movie-poster">
+          <img crossOrigin="anonymous" id="poster_img" src={movie.ImagePath} />
+        </div>
+        <div className="movie-text">
+          <div className="movie-title">
+            <span className="label">Title: </span>
+            <span className="value">{movie.Title}</span>
+          </div>
+          <div className="movie-description">
+            <span className="label">Description: </span>
+            <span className="value">{movie.Description}</span>
+          </div>
+          <div className="movie-genre">
+            <span className="label">Genre: </span>
+            <Link to={`/genres/${movie.Genre.Name}`}>{movie.Genre.Name}</Link>
+          </div>
+          <div className="movie-director">
+            <span className="label">Director: </span>
+            <Link to={`/directors/${movie.Director.Name}`}>{movie.Director.Name}</Link>
+          </div>
+        </div>
+        <button onClick={() => { onBackClick(null); }}>Back</button>
+      </div>
     );
   }
 }
