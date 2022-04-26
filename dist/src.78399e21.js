@@ -58055,18 +58055,18 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
 exports.ProfileView = ProfileView;
 ProfileView.propTypes = {
   movies: _propTypes.default.arrayOf(_propTypes.default.shape({
-    Title: _propTypes.default.string.isRequired,
-    Description: _propTypes.default.string.isRequired,
-    ImagePath: _propTypes.default.string.isRequired,
+    Title: _propTypes.default.string,
+    Description: _propTypes.default.string,
+    ImagePath: _propTypes.default.string,
     Genre: _propTypes.default.shape({
-      Name: _propTypes.default.string.isRequired,
+      Name: _propTypes.default.string,
       Description: _propTypes.default.string
     }).isRequired,
     Director: _propTypes.default.shape({
       Bio: _propTypes.default.string,
       Birth: _propTypes.default.string,
       Death: _propTypes.default.string,
-      Name: _propTypes.default.string.isRequired
+      Name: _propTypes.default.string
     }).isRequired
   })).isRequired,
   onBackClick: _propTypes.default.func.isRequired
