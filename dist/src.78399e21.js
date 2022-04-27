@@ -57309,7 +57309,84 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/register-view/register-view.jsx":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/react-fade-in/lib/FadeIn.js":[function(require,module,exports) {
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var react_1 = __importStar(require("react"));
+function FadeIn(props) {
+    var _a = react_1.useState(0), maxIsVisible = _a[0], setMaxIsVisible = _a[1];
+    var transitionDuration = props.transitionDuration || 400;
+    var delay = props.delay || 50;
+    var WrapperTag = props.wrapperTag || "div";
+    var ChildTag = props.childTag || "div";
+    var visible = typeof props.visible === "undefined" ? true : props.visible;
+    react_1.useEffect(function () {
+        var count = react_1.default.Children.count(props.children);
+        if (!visible) {
+            // Animate all children out
+            count = 0;
+        }
+        if (count == maxIsVisible) {
+            // We're done updating maxVisible, notify when animation is done
+            var timeout_1 = setTimeout(function () {
+                if (props.onComplete)
+                    props.onComplete();
+            }, transitionDuration);
+            return function () { return clearTimeout(timeout_1); };
+        }
+        // Move maxIsVisible toward count
+        var increment = count > maxIsVisible ? 1 : -1;
+        var timeout = setTimeout(function () {
+            setMaxIsVisible(maxIsVisible + increment);
+        }, delay);
+        return function () { return clearTimeout(timeout); };
+    }, [
+        react_1.default.Children.count(props.children),
+        delay,
+        maxIsVisible,
+        visible,
+        transitionDuration,
+    ]);
+    return (react_1.default.createElement(WrapperTag, { className: props.className }, react_1.default.Children.map(props.children, function (child, i) {
+        return (react_1.default.createElement(ChildTag, { className: props.childClassName, style: {
+                transition: "opacity " + transitionDuration + "ms, transform " + transitionDuration + "ms",
+                transform: maxIsVisible > i ? "none" : "translateY(20px)",
+                opacity: maxIsVisible > i ? 1 : 0,
+            } }, child));
+    })));
+}
+exports.default = FadeIn;
+
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-fade-in/lib/index.js":[function(require,module,exports) {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = void 0;
+var FadeIn_1 = require("./FadeIn");
+Object.defineProperty(exports, "default", { enumerable: true, get: function () { return __importDefault(FadeIn_1).default; } });
+
+},{"./FadeIn":"../node_modules/react-fade-in/lib/FadeIn.js"}],"components/register-view/register-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -57321,13 +57398,15 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
-var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
+var _reactBootstrap = require("react-bootstrap");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
+var _reactRouterDom = require("react-router-dom");
 
 require("./register-view.scss");
+
+var _reactFadeIn = _interopRequireDefault(require("react-fade-in"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57347,67 +57426,110 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function RegisterView(props) {
-  var _useState = (0, _react.useState)(''),
+function RegisterView() {
+  var _useState = (0, _react.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       username = _useState2[0],
       setUsername = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(''),
+  var _useState3 = (0, _react.useState)(""),
       _useState4 = _slicedToArray(_useState3, 2),
       password = _useState4[0],
       setPassword = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(''),
+  var _useState5 = (0, _react.useState)(""),
       _useState6 = _slicedToArray(_useState5, 2),
-      email = _useState6[0],
-      setEmail = _useState6[1];
+      passwordRepeat = _useState6[0],
+      setPasswordRepeat = _useState6[1];
 
-  var _useState7 = (0, _react.useState)(''),
+  var _useState7 = (0, _react.useState)(""),
       _useState8 = _slicedToArray(_useState7, 2),
-      birthday = _useState8[0],
-      setBirthday = _useState8[1];
+      email = _useState8[0],
+      setEmail = _useState8[1];
 
-  var _useState9 = (0, _react.useState)(''),
+  var _useState9 = (0, _react.useState)(""),
       _useState10 = _slicedToArray(_useState9, 2),
-      usernameErr = _useState10[0],
-      setUsernameErr = _useState10[1];
+      birthday = _useState10[0],
+      setBirthdate = _useState10[1];
 
-  var _useState11 = (0, _react.useState)(''),
+  var _useState11 = (0, _react.useState)(""),
       _useState12 = _slicedToArray(_useState11, 2),
-      passwordErr = _useState12[0],
-      setPasswordErr = _useState12[1];
+      usernameErr = _useState12[0],
+      setusernameErr = _useState12[1];
 
-  var _useState13 = (0, _react.useState)(''),
+  var _useState13 = (0, _react.useState)(""),
       _useState14 = _slicedToArray(_useState13, 2),
-      emailErr = _useState14[0],
-      setEmailErr = _useState14[1];
+      passwordErr = _useState14[0],
+      setpasswordErr = _useState14[1];
+
+  var _useState15 = (0, _react.useState)(""),
+      _useState16 = _slicedToArray(_useState15, 2),
+      passwordRepeatErr = _useState16[0],
+      setpasswordRepeatErr = _useState16[1];
+
+  var _useState17 = (0, _react.useState)(""),
+      _useState18 = _slicedToArray(_useState17, 2),
+      emailErr = _useState18[0],
+      setemailErr = _useState18[1];
+
+  var _useState19 = (0, _react.useState)(""),
+      _useState20 = _slicedToArray(_useState19, 2),
+      birthdayErr = _useState20[0],
+      setbirthdayErr = _useState20[1];
 
   var validate = function validate() {
     var isReq = true;
 
     if (!username) {
-      setUsernameErr('Username Required');
+      setusernameErr("Username Required");
       isReq = false;
-    } else if (username.length < 5) {
-      setUsernameErr('Username must be 5 characters long');
+    } else if (username.length < 6) {
+      setusernameErr("Username must be 6 characters long");
       isReq = false;
+    } else {
+      setusernameErr("");
+      isReq = true;
     }
 
     if (!password) {
-      setPasswordErr('Password Required');
+      setpasswordErr("Password Required");
       isReq = false;
-    } else if (password.length < 6) {
-      setPasswordErr('Password must be 6 characters long');
+    } else if (password.length < 8) {
+      setpasswordErr("Password must be 8 characters long");
       isReq = false;
+    } else {
+      setpasswordErr("");
+      isReq = true;
+    }
+
+    if (!passwordRepeat) {
+      setpasswordRepeatErr("Please repeat the password you have entered");
+      isReq = false;
+    } else if (passwordRepeat !== password) {
+      setpasswordRepeatErr("Passwords have to match");
+      isReq = false;
+    } else {
+      setpasswordRepeatErr("");
+      isReq = true;
     }
 
     if (!email) {
-      setEmailErr('Email required');
+      setemailErr("Email is required");
       isReq = false;
-    } else if (email.indexOf('@') === -1) {
-      setEmail('Email must be valid');
+    } else if (email.indexOf("@") === -1) {
+      setemailErr("Email is invalid");
       isReq = false;
+    } else {
+      setemailErr("");
+      isReq = true;
+    }
+
+    if (!birthday) {
+      setbirthdayErr("Birthday should not be empty");
+      isReq = false;
+    } else {
+      setbirthdayErr("");
+      isReq = true;
     }
 
     return isReq;
@@ -57418,8 +57540,7 @@ function RegisterView(props) {
     var isReq = validate();
 
     if (isReq) {
-      /* Send a request to the server for authentication */
-      _axios.default.post('https://myflixapp1.herokuapp.com/users', {
+      _axios.default.post("https://myflixapp1.herokuapp.com/users", {
         Username: username,
         Password: password,
         Email: email,
@@ -57427,69 +57548,127 @@ function RegisterView(props) {
       }).then(function (response) {
         var data = response.data;
         console.log(data);
-        alert('Registration successfull!');
-        window.open('/', '_self');
-      }).catch(function (e) {
-        console.log('error registering the user');
+        alert("You have succesfully registered to the best Movie platform!");
+        window.open("/", "_self");
+      }).catch(function (response) {
+        console.error(response);
+        alert("Registration was unseccesful. Please try again!");
       });
     }
   };
 
-  return /*#__PURE__*/_react.default.createElement(_Form.default, null, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
-    controlId: "formUsername"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, {
-    id: "label"
-  }, "Username:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+  return /*#__PURE__*/_react.default.createElement(_reactBootstrap.Container, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "welcome-text text-center"
+  })), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form, {
+    className: "login-container",
+    style: {
+      margin: "5rem"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Group, {
+    controlId: "registerUsername",
+    style: {
+      margin: "2rem"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Label, null, "Username:"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
     type: "text",
-    placeholder: "Username",
+    value: username,
+    autoComplete: "name",
+    placeholder: "Username (min 8 characters)",
     onChange: function onChange(e) {
       return setUsername(e.target.value);
     }
-  }), usernameErr && /*#__PURE__*/_react.default.createElement("p", null, usernameErr)), /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
-    controlId: "formPassword"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, {
-    id: "label"
-  }, "Password:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+  }), usernameErr && /*#__PURE__*/_react.default.createElement(_reactFadeIn.default, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "invalid-feedback",
+    style: {
+      display: "block"
+    }
+  }, usernameErr))), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Group, {
+    controlId: "registerPassword",
+    style: {
+      margin: "2rem"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Label, null, "Password:"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
     type: "password",
-    placeholder: "Password",
+    placeholder: "Password (Password must be between 8 to 16 characters)",
+    value: password,
+    autoComplete: "new-password",
+    minLength: "1",
     onChange: function onChange(e) {
       return setPassword(e.target.value);
     }
-  }), passwordErr && /*#__PURE__*/_react.default.createElement("p", null, passwordErr)), /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
-    controlId: "formEmail"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, {
-    id: "label"
-  }, "Email:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
+  }), passwordErr && /*#__PURE__*/_react.default.createElement(_reactFadeIn.default, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "invalid-feedback",
+    style: {
+      display: "block"
+    }
+  }, passwordErr)), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Label, {
+    style: {
+      marginTop: "0.5rem"
+    }
+  }, "Password (repeat):"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
+    type: "password",
+    placeholder: "Pasword (repeat)",
+    value: passwordRepeat,
+    onChange: function onChange(e) {
+      return setPasswordRepeat(e.target.value);
+    }
+  }), passwordRepeatErr && /*#__PURE__*/_react.default.createElement(_reactFadeIn.default, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "invalid-feedback",
+    style: {
+      display: "block"
+    }
+  }, passwordRepeatErr))), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Group, {
+    style: {
+      margin: "2rem"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Label, null, "Email:"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
     type: "email",
     placeholder: "Email",
+    autoComplete: "email",
+    value: email,
     onChange: function onChange(e) {
       return setEmail(e.target.value);
     }
-  }), emailErr && /*#__PURE__*/_react.default.createElement("p", null, emailErr)), /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
-    controlId: "formBirthday"
-  }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, {
-    id: "label"
-  }, "Birthday:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
-    type: "full-date",
-    onChange: function onChange(e) {
-      return setBirthday(e.target.value);
+  }), emailErr && /*#__PURE__*/_react.default.createElement(_reactFadeIn.default, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "invalid-feedback",
+    style: {
+      display: "block"
     }
-  })), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    variant: "primary",
-    type: "submit",
-    onClick: handleSubmit
-  }, "Submit"));
+  }, emailErr))), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Group, {
+    style: {
+      margin: "2rem"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Label, null, "Birthday:"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Form.Control, {
+    className: "birthday-input",
+    type: "date",
+    autoComplete: "bday",
+    value: birthday,
+    onChange: function onChange(e) {
+      return setBirthdate(e.target.value);
+    }
+  }), birthdayErr && /*#__PURE__*/_react.default.createElement(_reactFadeIn.default, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "invalid-feedback",
+    style: {
+      display: "block"
+    }
+  }, birthdayErr))), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/"
+  }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Button, {
+    size: "sm",
+    label: "Cancel",
+    onClick: function onClick() {
+      return "";
+    }
+  }, "Cancel")), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Button, {
+    size: "sm",
+    label: "Register",
+    onClick: handleSubmit,
+    style: {
+      textAlign: "center"
+    }
+  }, "Register")));
 }
-
-RegisterView.propTypes = {
-  register: _propTypes.default.shape({
-    Username: _propTypes.default.string.isRequired,
-    Password: _propTypes.default.string.isRequired,
-    Email: _propTypes.default.string.isRequired
-  }),
-  onRegistration: _propTypes.default.func
-};
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./register-view.scss":"components/register-view/register-view.scss"}],"components/director-view/director-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./register-view.scss":"components/register-view/register-view.scss","react-fade-in":"../node_modules/react-fade-in/lib/index.js"}],"components/director-view/director-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -57995,13 +58174,13 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
         style: {
           backgroundColor: "#222831"
         }
-      }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Card.Body, null, FavoriteMovies.length === 0 && /*#__PURE__*/_react.default.createElement("div", {
+      }, /*#__PURE__*/_react.default.createElement(_reactBootstrap.Card.Body, null, (FavoriteMovies || []).length === 0 && /*#__PURE__*/_react.default.createElement("div", {
         className: "text-center",
         id: "fm_text_color"
       }, "No Favorite Movies"), /*#__PURE__*/_react.default.createElement(_reactBootstrap.Row, {
         className: "favorite-container",
         md: 2
-      }, FavoriteMovies.length > 0 && movies.map(function (movie) {
+      }, (FavoriteMovies || []).length > 0 && movies.map(function (movie) {
         if (movie._id === FavoriteMovies.find(function (fav) {
           return fav === movie._id;
         })) {
@@ -58055,18 +58234,18 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
 exports.ProfileView = ProfileView;
 ProfileView.propTypes = {
   movies: _propTypes.default.arrayOf(_propTypes.default.shape({
-    Title: _propTypes.default.string,
-    Description: _propTypes.default.string,
-    ImagePath: _propTypes.default.string,
+    Title: _propTypes.default.string.isRequired,
+    Description: _propTypes.default.string.isRequired,
+    ImagePath: _propTypes.default.string.isRequired,
     Genre: _propTypes.default.shape({
-      Name: _propTypes.default.string,
+      Name: _propTypes.default.string.isRequired,
       Description: _propTypes.default.string
     }).isRequired,
     Director: _propTypes.default.shape({
       Bio: _propTypes.default.string,
       Birth: _propTypes.default.string,
       Death: _propTypes.default.string,
-      Name: _propTypes.default.string
+      Name: _propTypes.default.string.isRequired
     }).isRequired
   })).isRequired,
   onBackClick: _propTypes.default.func.isRequired
@@ -58902,7 +59081,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58348" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55797" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

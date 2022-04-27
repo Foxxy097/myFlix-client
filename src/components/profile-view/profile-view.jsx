@@ -261,11 +261,11 @@ export class ProfileView extends React.Component {
 
             <Card className="favorite-view border-0" style={{ backgroundColor: "#222831" }}>
               <Card.Body>
-                {FavoriteMovies.length === 0 && (
+                {(FavoriteMovies || []).length === 0 && (
                   <div className="text-center" id="fm_text_color">No Favorite Movies</div>
                 )}
                 <Row className="favorite-container" md={2}>
-                  {FavoriteMovies.length > 0 &&
+                  {(FavoriteMovies || []).length > 0 &&
                     movies.map((movie) => {
                       if (
                         movie._id ===
@@ -311,18 +311,18 @@ export class ProfileView extends React.Component {
 
 ProfileView.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.shape({
-    Title: PropTypes.string,
-    Description: PropTypes.string,
-    ImagePath: PropTypes.string,
+    Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string.isRequired,
     Genre: PropTypes.shape({
-      Name: PropTypes.string,
+      Name: PropTypes.string.isRequired,
       Description: PropTypes.string,
     }).isRequired,
     Director: PropTypes.shape({
       Bio: PropTypes.string,
       Birth: PropTypes.string,
       Death: PropTypes.string,
-      Name: PropTypes.string,
+      Name: PropTypes.string.isRequired,
     }).isRequired,
   })).isRequired,
   onBackClick: PropTypes.func.isRequired
